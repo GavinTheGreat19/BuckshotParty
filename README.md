@@ -1,7 +1,7 @@
 # Hello World.
 I am GavinTheGreat19, and I have developed Buckshot Party!
 I was heavily inspired by the works of *Mike Klubnika*, particularly his game ***[Buckshot Roulette](https://mikeklubnika.itch.io/buckshot-roulette)***.
-I meant for this project to be an extension of my past one, Buckshot Counter. However, this one's scope surpassed it fairly quickly.
+I meant for this project to be an extension of my past one, [Buckshot Counter.](https://gavinthegreat19.github.io/BuckshotCounter/) However, this one's scope surpassed it fairly quickly.
 I decided to make it after showing my past project to my friends at school, when they took advantage of the shotgun I added on a whim, using it to play a very barebones version of Buckshot Roulette.
 This inspired me to try and recreate the entire game with HTML so I could play it with my friends, so we wouldn't have to keep track of health and such in our heads.
 ## Features!
@@ -10,7 +10,7 @@ This inspired me to try and recreate the entire game with HTML so I could play i
 - Three Different Play modes (2, 3 and 4)
 - Individual Player Classifications
   - Different Healths
-  - Different Turns (sometimes it doesn't do the thing where it switches turns, but it is purely visual and functionally irrelevant.)
+  - Different Turns
 - Background Music
   - Pick between *Surrounded* by *Alex Peipmen* from the Buckshot Roulette OST, and *Nocturne op.9 No.2* by *Frédéric Chopin*
 - Sound Effects for like everything
