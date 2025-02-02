@@ -1,0 +1,499 @@
+<html>
+    <head>
+        <style>
+            body {
+                background-color: black;
+                background: linear-gradient(to bottom, #4e0501, #2c0503, #180100, black);
+                color: whitesmoke;
+                font-size: xx-large;
+                font-family:'Times New Roman', Times, serif;
+                padding: 20;
+                font-weight: bold;
+                text-shadow: 0px 0px 8px black;
+                filter: drop-shadow(0px 0px 4px black);
+            }
+            .hack {
+                font-family: 'Courier New', Courier, monospace;
+                text-shadow: 0px 0px 5px lime;
+            }
+            .smol {
+                font-size: medium;
+            }
+            .button {
+                height: 90;
+                width: 90;
+                font-family: 'Courier New', Courier, monospace;
+                border: 2px solid
+            }
+            .button:active{
+                transform: scale(0.95)
+            }
+            #b1 {
+                background-image: url(b1.png);
+                background-size: contain;
+            }
+            #b2 {
+                background-image: url(b2.png);
+                background-size: contain;
+            }
+            #b3 {
+                background-image: url(b3.png);
+                background-size: contain;
+            }
+            #b4 {
+                background-image: url(b4.png);
+                background-size: contain;
+            }
+            #be {
+                background-image: url(be.png);
+                background-size: contain;
+                height: 110;
+                width: 110;
+            }
+            #bv {
+                background-image: url(bv.png);
+                background-size: contain;
+                height: 80;
+                width: 80;
+            }
+            #shotgun {
+                background-image: url(shotgun.png);
+                height: 121.25;
+                width: 926;
+                background-size: cover;
+                background-color: transparent;
+                border:none
+            }
+            .obutton:active{
+                transform: scale(0.95)
+            }
+            .obutton{
+                background-size: cover;
+                background-color: transparent;
+                border:none
+            }
+            .item{
+                height: 200;
+                width: 200;
+            }
+            .shells {
+                height: 128px;
+            }
+
+            #can{
+                background-image: url("can.png");
+            }
+            #gum{
+                background-image: url("gum.png");
+            }
+            #crowbar{
+                background-image: url("crowbar.png");
+            }
+            #card{
+                background-image: url("card.png");
+            }
+            #flashlight{
+                background-image: url("flashlight.png");
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Buckshot Party</h1>
+        <p class="hack" id="big text">Select Number of players, then press the bolt:</p>
+        <p class="smol hack" id="small text">The lightning bolt is the "use" button. Cannot play a game with less than two players</p>
+
+        <input type=button class="button" id="b1" onclick="{button1();}">
+        <input type=button class="button" id="b2" onclick="{button2();}">
+        <input type=button class="button" id="b3" onclick="{button3();}">
+        <input type=button class="button" id="b4" onclick="{button4();}">
+        <input type=button class="button" id="be" onclick="{buttonGo();}">
+        <input type=button class="button" id="bv" onclick="{musicButton();}">
+
+        <br><br>
+        <input type=button id="shotgun" class="obutton" onclick="{shotgunPickup();}">
+
+        <div id="liveShells" class="hack">Lives: 0</div>
+        <div id="blankShells" class="hack">Blanks: 0</div>
+
+        </div>
+
+        <div id="itemcontainer">
+            <input type="button" class="item obutton" id="can">
+            <input type="button" class="item obutton" id="gum">
+            <input type="button" class="item obutton" id="crowbar">
+            <input type="button" class="item obutton" id="card">
+            <input type="button" class="item obutton" id="flashlight">
+        </div>
+
+
+        <script>
+
+        let click = new Audio('buttonpress.ogg');
+        let beep = new Audio('beep.ogg')
+        let roundStart = new Audio('RoundStart.ogg')
+        let shellShown = new Audio('shellreveal.ogg')
+        let load = new Audio('shelladd.ogg')
+        let rack = new Audio('rackshotgun.ogg')
+        let pickupShotgun = new Audio('selectgun.ogg')
+        let pickup = new Audio('itemhover.ogg')
+        let gunLive = new Audio('gunshot_live.wav')
+        let gunBlank = new Audio('gunshot_blank.wav')
+        let winner = new Audio('winner.ogg')
+        let classical = new Audio('classical.mp3')
+        let techno = new Audio('techno.ogg')
+        
+        let game = false;
+
+        let bigText = document.getElementById("big text")
+        let smallText = document.getElementById("small text")
+        let liveShellDisplay = document.getElementById("liveShells")
+        let blankShellDisplay = document.getElementById("blankShells")
+
+        let player1 = false;
+        let playerHealth1 = 0;
+
+        let player2 = false; 
+        let playerHealth2 = 0;
+
+        let player3 = false;
+        let playerHealth3 = 0;
+
+        let player4 = false;
+        let playerHealth4 = 0;
+
+
+        let currentPlayer = 1;
+        let currentTarget = 1;
+        let currentItem = "shotgun"
+
+        let playersLeft = 0;
+        let playerMode = "two";
+
+            document.addEventListener("click", function() {
+            click.currentTime = 0;
+            click.play();
+            });
+
+
+            function button1() {
+                if (game == false) {
+                    bigText.innerText = "Number of Players: cannot be one"
+                    smallText.innerText = "Select 2 or more players, then press the bolt."
+                    beep.currentTime = 0;
+                    beep.play();
+
+                    player1 = true;
+                    player2 = false;
+                    player3 = false;
+                    player4 = false;
+                } else if (game == true && player1 == true) {
+                    currentTarget = 1;
+                    bigText.innerText = "Targeting Player One"
+                    smallText.innerText = `They have ${playerHealth1} health points`
+                    beep.currentTime = 0;
+                    beep.play();
+                } else if (player1 == false && game == true) {
+                    bigText.innerText = "Not a valid target"
+                    smallText.innerText = "Player is not a valid participant"
+                    currentTarget = 5
+                }
+            }
+
+            function button2() {
+                if (game == false) {
+                    bigText.innerText = "Number of Players: Two"
+                    smallText.innerText = "Are you ready? then press the bolt."
+                    beep.currentTime = 0;
+                    beep.play();
+
+                    player1 = true;
+                    player2 = true;
+                    player3 = false;
+                    player4 = false;
+                    playersLeft = 2
+                    playerMode = "two"
+                } else if (game == true && player2 == true) {
+                    currentTarget = 2;
+                    bigText.innerText = "Targeting Player Two"
+                    smallText.innerText = `They have ${playerHealth2} health points`
+                    beep.currentTime = 0;
+                    beep.play();
+                } else if (player2 == false && game == true) {
+                    bigText.innerText = "Not a valid target"
+                    smallText.innerText = "Player is not a valid participant"
+                    currentTarget = 5
+                }
+            }
+
+            function button3() {
+                if (game == false) {
+                    bigText.innerText = "Number of Players: Three"
+                    smallText.innerText = "Are you ready? then press the bolt."
+                    beep.currentTime = 0;
+                    beep.play();
+
+                    player1 = true;
+                    player2 = true;
+                    player3 = true;
+                    player4 = false;
+                    playersLeft = 3
+                    playerMode = "three"
+                } else if (game == true && player3 == true) {
+                    currentTarget = 1;
+                    bigText.innerText = "Targeting Player Three"
+                    smallText.innerText = `They have ${playerHealth3} health points`
+                    beep.currentTime = 0;
+                    beep.play();
+                } else if (player3 == false && game == true) {
+                    bigText.innerText = "Not a valid target"
+                    smallText.innerText = "Player is not a valid participant"
+                    currentTarget = 5
+                }
+            }
+
+            function button4() {
+                if (game == false) {
+                    bigText.innerText = "Number of Players: Four"
+                    smallText.innerText = "Are you ready? then press the bolt."
+                    beep.currentTime = 0;
+                    beep.play();
+
+                    player1 = true;
+                    player2 = true;
+                    player3 = true;
+                    player4 = true;
+                    playersLeft = 4
+                    playerMode = "four"
+                } else if (game == true && player4 == true) {
+                    currentTarget = 1;
+                    bigText.innerText = "Targeting Player Four"
+                    smallText.innerText = `They have ${playerHealth4} health points`
+                    beep.currentTime = 0;
+                    beep.play();
+                } else if (player4 == false && game == true) {
+                    bigText.innerText = "Not a valid target"
+                    smallText.innerText = "Player is not a valid participant"
+                    currentTarget = 5
+                }
+            }
+
+            function buttonGo() {
+                if (player2 == true && game == false) {
+                    game = true;
+
+                    let beeps = 3;
+                    beeping();
+
+                    function beeping() {
+                    if (beeps > 0) {
+                    roundStart.currentTime = 0;
+                    roundStart.play();
+                    beeps -= 1;
+
+                    setTimeout(beeping, 750)
+                        } else {
+                            startGame()
+                        }
+                    }
+                } else if (game == true && currentItem == "shotgun" && currentTarget < 5) {
+
+                    let lastShell = shells.pop();
+
+                    if (lastShell == "live"){
+                        gunLive.currentTime = 0;
+                        gunLive.play();
+                        lives -= 1;
+                        liveShellDisplay.innerText = `Lives: ${lives}`
+
+                            if (currentTarget == 1){
+                                playerHealth1 -= 1
+                            } if (currentTarget == 2){
+                                playerHealth2 -= 1
+                            } if (currentTarget == 3){
+                                playerHealth3 -= 1
+                            } if (currentTarget == 4){
+                                playerHealth4 -= 1
+                            } changeTurn()
+                    } else if (lastShell == "blank"){
+                        gunBlank.currentTime = 0;
+                        gunBlank.play();
+                        blanks -= 1;
+                        blankShellDisplay.innerText = `Blanks: ${blanks}`
+                            if (currentPlayer != currentTarget || shells.length == 0) {
+                                changeTurn();
+                            }
+                    }
+                }
+            }
+
+            let song = "mute"
+            function musicButton(){
+                if (song == "mute"){
+                    song = "techno";
+                    techno.currentTime = 0;
+                    techno.play();
+                } else if (song == "techno") {
+                    song = "classical"
+                    techno.pause();
+                    classical.currentTime = 2;
+                    classical.play();
+                } else if (song == "classical") {
+                    song = "mute"
+                    classical.pause();
+                }
+            }
+
+            function shotgunPickup() {
+                if (game == true) {
+                pickupShotgun.currentTime = 0;
+                pickupShotgun.play();
+                currentItem = "shotgun"
+                }
+            }
+
+            let shells = [];
+            let lives = 0;
+            let blanks = 0;
+
+            function startGame() {
+                giveItems()
+                playerHealth1 = 4;
+                playerHealth2 = 4;
+                playerHealth3 = 4;
+                playerHealth4 = 4;
+            }
+
+            function giveItems() {
+                
+
+                let numberOfShells = Math.floor(Math.random() * 8) + 1
+                console.log(numberOfShells);
+
+                
+
+                for (let i = 0; numberOfShells >= i;) {
+                    let newShell = "error";
+                if (Math.random() > 0.5){
+                    newShell = "live";
+                    lives += 1;
+                } else {
+                    newShell = "blank";
+                    blanks += 1;
+                }
+                shells.push(newShell);
+                i += 1;
+            }
+            console.log(shells)
+            console.log(lives)
+            console.log(blanks)
+
+            shellShown.currentTime = 0;
+            shellShown.play();
+            bigText.innerText = `${lives} Lives, ${blanks} Blanks.`
+            smallText.innerText ="They enter the chamber in a hidden sequence"
+            liveShellDisplay.innerText = `Lives: ${lives}`
+            blankShellDisplay.innerText = `Blanks: ${blanks}`
+
+            setTimeout(loadGun, 600);
+
+            let roundsLoaded = 0;
+
+        function loadGun() {
+                if (roundsLoaded <= numberOfShells) {
+                load.currentTime = 0;
+                load.play();
+                roundsLoaded += 1;
+                setTimeout(loadGun, 225);
+            } else {
+                setTimeout(function() {
+                    rack.currentTime = 0;
+                    rack.play();
+                setTimeout(startRound(), 500)
+                }, 250);
+            }
+        }
+        }
+            function changeTurn() {
+                if (playerHealth1 < 1){
+                    playerHealth1 = "Null"
+                    playersLeft -= 1
+                    player1 = false;
+                }
+                if (playerHealth2 < 1){
+                    playerHealth2 = "Null"
+                    playersLeft -= 1
+                    player2 = false;
+                }
+                if (playerHealth3 < 1){
+                    playerHealth3 = "Null"
+                    playersLeft -= 1
+                    player3 = false;
+                }
+                if (playerHealth4 < 1){
+                    playerHealth4 = "Null"
+                    playersLeft -= 1
+                    player4 = false;
+                }
+                if ((lives > 0 && blanks > 0) || playersLeft > 2 ){
+                currentPlayer += 1
+                }
+
+                if (playerMode == "two" && currentPlayer > 2) {
+                currentPlayer = 1
+                }
+                if (playerMode == "three" && currentPlayer > 3) {
+                currentPlayer = 1
+                }
+
+                if (currentPlayer > 4) {
+                currentPlayer = 1;
+                }
+                 if (playersLeft < 2) {
+                classical.pause();
+                techno.pause();
+                winner.currentTime = 0;
+                winner.play();
+                setTimeout(function(){location.reload();}, 5000)
+                } if (lives < 1 && blanks < 1) {
+                giveItems();
+                }
+
+                startRound();
+
+            }
+
+            function startRound() {
+                beep.currentTime = 0;
+                beep.play();
+
+
+                if ((currentPlayer == 1 && player1 == true) || lives < 1 && blanks < 1) {
+                    bigText.innerText = `Player 1. It's your turn. You have: ${playerHealth1} Health`
+                    smallText.innerText = `Select an Item, then click the bolt to use it. Press the numbers to select a target`
+                } else if (currentPlayer == 2 && player2 == true) {
+                    bigText.innerText = `Player 2. It's your turn. You have: ${playerHealth2} Health`
+                    smallText.innerText = `Select an Item, then click the bolt to use it. Press the numbers to select a target`
+                } else if (currentPlayer == 3 && player3 == true) {
+                    bigText.innerText = `Player 3. It's your turn. You have: ${playerHealth3} Health`
+                    smallText.innerText = `Select an Item, then click the bolt to use it. Press the numbers to select a target`
+                } else if (currentPlayer == 4 && player4 == true) {
+                    bigText.innerText = `Player 4. It's your turn. You have: ${playerHealth4} Health`
+                    smallText.innerText = `Select an Item, then click the bolt to use it. Press the numbers to select a target`
+                } else {
+                    currentPlayer = 0;
+                    changeTurn();
+                }
+
+                
+            }
+
+
+
+            document.addEventListener("click", function() {
+
+            });
+
+
+        </script>
+    </body>
+</html>
