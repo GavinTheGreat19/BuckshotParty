@@ -1,10 +1,9 @@
-# Hello World
+# Hello World.
 I am GavinTheGreat19, and I have developed Buckshot Party!
 I was heavily inspired by the works of *Mike Klubnika*, particularly his game ***[Buckshot Roulette](https://mikeklubnika.itch.io/buckshot-roulette)***.
 I meant for this project to be an extension of my past one, Buckshot Counter. However, this one's scope surpassed it fairly quickly.
 I decided to make it after showing my past project to my friends at school, when they took advantage of the shotgun I added on a whim, using it to play a very barebones version of Buckshot Roulette.
 This inspired me to try and recreate the entire game with HTML so I could play it with my friends, so we wouldn't have to keep track of health and such in our heads.
----
 ## Features!
 - 3D Graphics and Visuals, by me!
   - I made all of the graphics for this project, that probably took the most time. Hackatime doesn't track blender, but I spent around six hours making, texturing, compositing, and rendering the models themselves for use in the game.
